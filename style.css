@@ -4,47 +4,66 @@ body {
   font-family: sans-serif;
   margin: 0;
   overflow: hidden;
-  background-image: url('img/space-background.jpg');
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1 {
   text-align: center;
-  margin: 10px;
-  font-size: 2rem;
+  margin: 10px 0;
+  font-size: 5vw;
 }
 
 #hud {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 800px;
   margin-bottom: 10px;
-  font-size: 1.2rem;
+  font-size: 4vw;
 }
 
 #game {
-  width: 90vw;
+  width: 100%;
   max-width: 800px;
-  height: 75vh;
-  max-height: 600px;
-  margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0.6);
+  aspect-ratio: 4 / 3;
+  background: url('img/space-background.jpg') center/cover;
   position: relative;
-  overflow: hidden;
   border: 3px solid white;
+  overflow: hidden;
+}
+
+#player, .enemy, .shot, .enemy-shot {
+  position: absolute;
+  width: 10%;
+  height: auto;
+}
+
+.shot {
+  width: 3%;
+  height: auto;
+}
+
+.enemy-shot {
+  width: 3%;
+  height: 5%;
+  background: transparent;
+}
+
+#controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.control-button {
+  background-color: #333;
+  color: white;
+  border: 2px solid white;
   border-radius: 10px;
-}
-
-#player, .enemy {
-  position: absolute;
-  width: 10vw;
-  max-width: 80px;
-  height: auto;
-}
-
-.shot, .enemy-shot {
-  position: absolute;
-  width: 4vw;
-  max-width: 30px;
-  height: auto;
+  padding: 15px 25px;
+  font-size: 1.5em;
+  user-select: none;
 }
