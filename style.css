@@ -34,7 +34,7 @@ h1 {
   position: relative;
   border: 3px solid white;
   overflow: hidden;
-  touch-action: none;
+  touch-action: manipulation;
 }
 
 #player, .enemy, .shot, .enemy-shot {
