@@ -1,9 +1,10 @@
 body {
-  background: #000;
+  background: linear-gradient(#000, #001);
   color: #fff;
   font-family: sans-serif;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,10 +29,12 @@ h1 {
   width: 100%;
   max-width: 800px;
   aspect-ratio: 4 / 3;
-  background: url('img/space-background.jpg') center/cover;
+  background: url('space-background.png') no-repeat center center;
+  background-size: cover;
   position: relative;
   border: 3px solid white;
   overflow: hidden;
+  touch-action: none;
 }
 
 #player, .enemy, .shot, .enemy-shot {
@@ -56,14 +59,22 @@ h1 {
   justify-content: center;
   gap: 10px;
   margin-top: 10px;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10;
 }
 
 .control-button {
+  flex: 1;
   background-color: #333;
   color: white;
   border: 2px solid white;
   border-radius: 10px;
-  padding: 15px 25px;
-  font-size: 1.5em;
+  padding: 20px 0;
+  font-size: 6vw;
   user-select: none;
+  touch-action: manipulation;
 }
