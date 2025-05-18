@@ -157,3 +157,18 @@ function loseLife() {
 }
 
 spawnEnemy();
+
+document.getElementById("leftBtn").addEventListener("touchstart", () => {
+  playerX = Math.max(0, playerX - 20);
+  player.style.left = playerX + "px";
+});
+
+document.getElementById("rightBtn").addEventListener("touchstart", () => {
+  playerX = Math.min(720, playerX + 20);
+  player.style.left = playerX + "px";
+});
+
+document.getElementById("shootBtn").addEventListener("touchstart", () => {
+  shoot();
+});
+
