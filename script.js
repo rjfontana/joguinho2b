@@ -9,7 +9,6 @@ const enemyImages = [
 ];
 
 const playerShotImage = "shot.png";
-const enemyShotImage = "enemy-shot.png";
 
 let playerX = game.offsetWidth / 2 - 40;
 let score = 0;
@@ -19,7 +18,7 @@ let currentEnemy = 0;
 player.style.left = playerX + "px";
 player.style.bottom = "0px";
 
-// Movimento do jogador
+// Movimento por teclado
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft" && playerX > 0) {
     playerX -= 20;
@@ -31,7 +30,30 @@ document.addEventListener("keydown", (e) => {
   player.style.left = playerX + "px";
 });
 
-// Criar tiro do jogador
+// Movimento por toque
+function bindTouch(id, handler) {
+  const btn = document.getElementById(id);
+  btn.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // evita rolagem na tela
+    handler();
+  }, { passive: false });
+}
+
+bindTouch("leftBtn", () => {
+  playerX = Math.max(0, playerX - 20);
+  player.style.left = playerX + "px";
+});
+
+bindTouch("rightBtn", () => {
+  playerX = Math.min(game.offsetWidth - 80, playerX + 20);
+  player.style.left = playerX + "px";
+});
+
+bindTouch("shootBtn", () => {
+  shoot();
+});
+
+// Tiro do jogador
 function shoot() {
   const shot = document.createElement("img");
   shot.src = playerShotImage;
@@ -52,7 +74,7 @@ function shoot() {
   }, 30);
 }
 
-// Criar inimigo
+// Inimigos
 function spawnEnemy() {
   const enemy = document.createElement("img");
   enemy.src = enemyImages[currentEnemy % enemyImages.length];
@@ -64,7 +86,6 @@ function spawnEnemy() {
   moveEnemy(enemy);
 }
 
-// Movimento inimigo + tiro
 function moveEnemy(enemy) {
   const interval = setInterval(() => {
     if (!enemy) return;
@@ -85,13 +106,15 @@ function moveEnemy(enemy) {
   }, 50);
 }
 
-// Inimigo atira
+// Tiro inimigo
 function enemyShoot(enemy) {
-  const enemyShot = document.createElement("img");
-  enemyShot.src = enemyShotImage;
+  const enemyShot = document.createElement("div");
   enemyShot.classList.add("enemy-shot");
   enemyShot.style.left = parseInt(enemy.style.left) + 25 + "px";
   enemyShot.style.top = parseInt(enemy.style.top) + 50 + "px";
+  enemyShot.style.position = "absolute";
+  enemyShot.style.backgroundImage = "url('enemy-shot.png')";
+  enemyShot.style.backgroundSize = "cover";
   game.appendChild(enemyShot);
 
   const interval = setInterval(() => {
@@ -106,7 +129,7 @@ function enemyShoot(enemy) {
   }, 30);
 }
 
-// Detectar colisão de tiro no inimigo
+// Colisão: tiro do jogador acerta inimigo
 function detectHit(shot, interval) {
   const enemies = document.querySelectorAll(".enemy");
   enemies.forEach((enemy) => {
@@ -129,7 +152,7 @@ function detectHit(shot, interval) {
   });
 }
 
-// Detectar colisão do inimigo com jogador
+// Colisão: inimigo atinge o jogador
 function detectPlayerHit(enemyShot, interval) {
   const playerBox = player.getBoundingClientRect();
   const shotBox = enemyShot.getBoundingClientRect();
@@ -145,6 +168,7 @@ function detectPlayerHit(enemyShot, interval) {
   }
 }
 
+// Perde vida
 function loseLife() {
   lives--;
   livesText.textContent = `Vidas: ${lives}`;
@@ -157,18 +181,3 @@ function loseLife() {
 }
 
 spawnEnemy();
-
-document.getElementById("leftBtn").addEventListener("touchstart", () => {
-  playerX = Math.max(0, playerX - 20);
-  player.style.left = playerX + "px";
-});
-
-document.getElementById("rightBtn").addEventListener("touchstart", () => {
-  playerX = Math.min(720, playerX + 20);
-  player.style.left = playerX + "px";
-});
-
-document.getElementById("shootBtn").addEventListener("touchstart", () => {
-  shoot();
-});
-
