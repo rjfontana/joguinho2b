@@ -1,26 +1,97 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Space Invaders</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Espectro Eletromagnético Interativo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Space Invaders</h1>
-  <div id="hud">
-    <span id="score">Pontuação: 0</span>
-    <span id="lives">Vidas: 3</span>
+  <main class="container">
+    <!-- Barra de bandas -->
+    <nav id="spectrum-bar">
+      <div class="band" data-type="Rádio"><i class="fas fa-broadcast-tower"></i><span>Rádio</span></div>
+      <div class="band" data-type="Micro-ondas"><i class="fas fa-wifi"></i><span>Micro-ondas</span></div>
+      <div class="band" data-type="Infravermelho"><i class="fas fa-thermometer-half"></i><span>Infravermelho</span></div>
+      <div class="band" data-type="Visível"><i class="fas fa-eye"></i><span>Visível</span></div>
+      <div class="band" data-type="Ultravioleta"><i class="fas fa-sun"></i><span>Ultravioleta</span></div>
+      <div class="band" data-type="Raios X"><i class="fas fa-x-ray"></i><span>Raios X</span></div>
+      <div class="band" data-type="Raios gama"><i class="fas fa-bolt"></i><span>Raios gama</span></div>
+    </nav>
+
+    <!-- Botão para mostrar onda -->
+    <button id="showWaveBtn" class="main-btn">Mostrar Onda</button>
+
+    <!-- Canvas da onda -->
+    <div class="wave-area">
+      <canvas id="waveCanvas" width="1000" height="120"></canvas>
+    </div>
+
+    <!-- InfoBox das bandas -->
+    <section id="infoBox" class="info"></section>
+
+    <!-- Botão para abrir o laboratório -->
+    <button id="openLabModal" class="main-btn">🔬 Laboratório do Laser</button>
+  </main>
+
+  <!-- Modal do laboratório -->
+  <div id="labModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeLabModal">&times;</span>
+      <h2>💡 Laboratório do Laser</h2>
+      <div class="lab-texto-explicativo">
+        <b>Enunciado:</b><br>
+        Um dos fatores que determinam a capacidade de armazenamento de dados nos discos laser é o comprimento de onda do laser usado para gravação e leitura (ver figura adiante). Isso porque o diâmetro <b>d</b> do feixe laser no ponto de leitura no disco é diretamente proporcional ao comprimento de onda, <b>λ</b>. No caso do Blu-ray, usa-se um comprimento de onda na faixa azul (daí o nome em inglês), que é menor que o do CD e o do DVD. As lentes usadas no leitor de Blu-ray são tais que vale a relação <b>d<sub>BR</sub> ≡ 1,2 λ<sub>BR</sub></b>. A partir das informações da figura, conclui-se que a frequência do laser usado no leitor Blu-ray é:
+      </div>
+      <div id="discos" class="discos-bar">
+        <button class="disco-btn" data-tipo="CD">CD</button>
+        <button class="disco-btn" data-tipo="DVD">DVD</button>
+        <button class="disco-btn" data-tipo="Blu-ray">Blu-ray</button>
+      </div>
+      <div id="lab-interativo" style="display:none;">
+        <p><strong>Diâmetro do feixe (d):</strong> <span id="diametro"></span> nm</p>
+        <label for="lambdaSlider">Ajuste o comprimento de onda (λ): <span id="lambdaValor"></span> nm</label>
+        <input type="range" id="lambdaSlider" min="350" max="1700" value="400">
+        <button id="calcularBtn" class="main-btn" style="margin-top:12px;">Calcular frequência</button>
+        <div class="output">
+          <p>Fórmula: <code>f = c / λ</code></p>
+          <p>f (frequência): <span id="frequenciaValor">-</span> Hz</p>
+        </div>
+        <div id="explicacao" class="highlight" style="display:none;"></div>
+      </div>
+      <div id="comparacao" class="comparacao-bar">
+        <strong>Comparação visual:</strong>
+        <div>
+          <div><b>CD</b><br>💿<br>d = 1600 nm</div>
+          <div><b>DVD</b><br>💽<br>d = 1100 nm</div>
+          <div><b>Blu-ray</b><br>🔵<br>d = 480 nm</div>
+        </div>
+      </div>
+      <div id="guiado" class="guiado-bar">
+        <b>Raciocínio guiado:</b>
+        <ul>
+          <li>Observe os valores de d (diâmetro do feixe) para cada disco.</li>
+          <li>Relacione d e λ (proporcionalidade direta).</li>
+          <li>Calcule λ usando d = 1,2 × λ.</li>
+          <li>Use a fórmula da frequência: f = c / λ.</li>
+          <li>Compare os resultados!</li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <div id="game">
-    <img id="player" src="player.png" />
-  </div>
-  <div id="controls">
-    <button class="control-button" id="leftBtn">◀️</button>
-    <button class="control-button" id="shootBtn">🚀</button>
-    <button class="control-button" id="rightBtn">▶️</button>
-  </div>
- <script src="script.js?v=1"></script>
+
+  <!-- GIF decorativo e clicável -->
+  <a href="https://www.instagram.com/profronaldo2025/" target="_blank" id="corner-gif-link">
+    <img src="Artboard 1.gif" id="corner-gif" alt="Instagram Prof. Ronaldo">
+  </a>
+
+  <!-- Elementos ocultos para MediaPipe -->
+  <video id="webcam" autoplay playsinline style="display:none"></video>
+  <canvas id="output" width="640" height="480" style="display:none"></canvas>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
-
